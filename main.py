@@ -1,17 +1,21 @@
+import asyncio
 from datetime import datetime
 
-from telebot.async_telebot import AsyncTeleBot, types
-import asyncio
+from aiogram import Bot, Dispatcher, executor, types
 from config import token
 from exchange_rate import get_sell_rates, get_buy_rates
 
 
 def start_bot():
-    bot = AsyncTeleBot(token)
+    bot = Bot(token=token)
+    dp = Dispatcher(bot)
+    chat_ids = {}
 
-    @bot.message_handler(commands=['start'])
-    async def send_welcome(message):
+    @dp.message_handler(commands=['start'])
+    async def send_welcome(message: types.Message):
+
         user_name = message.from_user.first_name
+        chat_ids[message.from_user.id] = message.from_user
 
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=3)
         usd = types.KeyboardButton('USD')
@@ -30,8 +34,8 @@ def start_bot():
                                reply_markup=markup,
                                parse_mode="html")
 
-    @bot.message_handler(content_types=["text"])
-    async def send_exchange_rates(message):
+    @dp.message_handler(content_types=["text"])
+    async def send_exchange_rates(message: types.Message):
 
         sell_rates = get_sell_rates()
         buy_rates = get_buy_rates()
@@ -55,9 +59,19 @@ def start_bot():
                                            parse_mode="html")
         except Exception as ex:
             print(ex)
-            await bot.reply_to(message, "Something went wrong!")
+            await message.reply("Something went wrong!")
 
-    asyncio.run(bot.polling())
+    async def daily_send(wait_for):
+        while True:
+            await asyncio.sleep(wait_for)
+
+            now = datetime.utcnow()
+            for chat_id in chat_ids:
+                await bot.send_message(chat_id, f"{now}", disable_notification=True)
+
+    loop = asyncio.get_event_loop()
+    loop.create_task(daily_send(10))
+    executor.start_polling(dp, skip_updates=True)
 
 
 if __name__ == '__main__':
