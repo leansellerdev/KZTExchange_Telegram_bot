@@ -1,11 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
-from config import url
+from config import URL
 from fake_useragent import UserAgent
 
 ua = UserAgent().random
 headers = {"User-Agent": ua}
-responce = requests.get(url, headers=headers)
+responce = requests.get(URL, headers=headers)
 
 
 def get_sell_rates():
