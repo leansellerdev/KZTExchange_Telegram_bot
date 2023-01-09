@@ -1,17 +1,19 @@
-import asyncio
 from datetime import datetime
-
 from aiogram import Bot, Dispatcher, executor, types
-from config import TOKEN, DAY_TIMER, CURRENT_DATE
-from exchange_rate import get_sell_rates, get_buy_rates
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from config import TOKEN
+from exchange_rate import get_sell_rates, get_buy_rates, get_daily_send_rates
 from data_base import SQLighter
 
 
 def start_bot():
     bot = Bot(token=TOKEN)
     dp = Dispatcher(bot)
+    scheduler = AsyncIOScheduler(timezone='Asia/Almaty')
 
     db = SQLighter('db.db')
+
+    current_time = datetime.now().strftime("%d-%m-%Y %H:%M")
 
     @dp.message_handler(commands=['start'])
     async def send_welcome(message: types.Message):
@@ -48,10 +50,10 @@ def start_bot():
     async def unsubscribe(message: types.Message):
         if not db.subscriber_exists(message.from_user.id):
             db.add_subscriber(message.from_user.id, False)
+            await bot.send_message(message.chat.id, "Вы не подписаны на ежедневную рассылку!")
         else:
             db.update_subscription(message.from_user.id, False)
-
-        await bot.send_message(message.chat.id, "Вы успешно отписались от ежедневной рассылки!")
+            await bot.send_message(message.chat.id, "Вы успешно отписались от ежедневной рассылки!")
 
     @dp.message_handler(content_types=["text"])
     async def send_exchange_rates(message: types.Message):
@@ -59,43 +61,46 @@ def start_bot():
         sell_rates = get_sell_rates()
         buy_rates = get_buy_rates()
 
-        current_time = datetime.now().strftime("%Y-%m-%d %H:%M")
-
         try:
             markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
 
             for key, values in buy_rates.items():
                 if message.text.upper() == key:
-                    await bot.send_message(message.chat.id,
-                                           text=f'Курс покупки <b>KZT</b> к <b>{key}</b> на {current_time}: <b>{values}</b>',
-                                           reply_markup=markup,
-                                           parse_mode="html")
+                    sell = f'Курс покупки <b>KZT</b> к <b>{key}</b> на {current_time}: <b>{values}</b>'
+
             for key, values in sell_rates.items():
                 if message.text.upper() == key:
-                    await bot.send_message(message.chat.id,
-                                           text=f'Курс продажи <b>KZT</b> к <b>{key}</b> на {current_time}: <b>{values}</b>',
-                                           reply_markup=markup,
-                                           parse_mode="html")
+                    buy = f'Курс продажи <b>KZT</b> к <b>{key}</b> на {current_time}: <b>{values}</b>'
+
+            await bot.send_message(message.chat.id, text=f'{buy}\n'
+                                                         f'{sell}',
+                                   reply_markup=markup,
+                                   parse_mode='html')
+
         except Exception as ex:
             print(ex)
-            await message.reply("Something went wrong!")
+            await message.reply("В данный момент невозможно обновить курс валют.\n"
+                                "Пожалуйста, попробуйте позже.")
 
-    async def daily_send(wait_for):
-        while True:
-            await asyncio.sleep(wait_for)
+    async def daily_send():
 
-            chat_ids = db.get_subscription()
+        chat_ids = db.get_subscription()
 
-            sell_rates = get_sell_rates()
-            buy_rates = get_buy_rates()
+        daily_rates = get_daily_send_rates()
+        txt = ''
 
-            for chat_id in chat_ids:
-                if chat_id[2]:
-                    await bot.send_message(chat_id[1], f"Курс покупки на {CURRENT_DATE}:\n {buy_rates}\n"
-                                                       f"Курс продажи на {CURRENT_DATE}:\n {sell_rates}")
+        for chat_id in chat_ids:
+            if chat_id[2]:
+                for key, values in daily_rates.items():
+                    txt += f"<b>{key}</b> : {values}\n"
 
-    loop = asyncio.get_event_loop()
-    loop.create_task(daily_send(DAY_TIMER))
+                await bot.send_message(chat_id[1],
+                                       text=f"Покупка/продажа:\n"
+                                            f"{txt}",
+                                       parse_mode='html')
+
+    scheduler.add_job(daily_send, trigger='cron', hour='9', minute='00')
+    scheduler.start()
     executor.start_polling(dp, skip_updates=True)
 
 
