@@ -1,7 +1,7 @@
 from datetime import datetime
 from aiogram import Bot, Dispatcher, executor, types
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from config import TOKEN
+from misc.config import TOKEN
 from exchange_rate import get_sell_rates, get_buy_rates, get_daily_send_rates
 from data_base import SQLighter
 
@@ -58,10 +58,11 @@ def start_bot():
     @dp.message_handler(content_types=["text"])
     async def send_exchange_rates(message: types.Message):
 
-        sell_rates = get_sell_rates()
-        buy_rates = get_buy_rates()
-
         try:
+
+            sell_rates = get_sell_rates()
+            buy_rates = get_buy_rates()
+
             markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
 
             for key, values in buy_rates.items():
@@ -84,23 +85,31 @@ def start_bot():
 
     async def daily_send():
 
-        chat_ids = db.get_subscription()
+        try:
+            chat_ids = db.get_subscription()
 
-        daily_rates = get_daily_send_rates()
-        txt = ''
+            daily_rates = get_daily_send_rates()
+            txt = ''
 
-        for chat_id in chat_ids:
-            if chat_id[2]:
-                for key, values in daily_rates.items():
-                    txt += f"<b>{key}</b> : {values}\n"
+            for chat_id in chat_ids:
+                if chat_id[2]:
+                    for key, values in daily_rates.items():
+                        txt += f"<b>{key}</b> : {values}\n"
 
-                await bot.send_message(chat_id[1],
-                                       text=f"Покупка/продажа:\n"
-                                            f"{txt}",
-                                       parse_mode='html')
+                    await bot.send_message(chat_id[1],
+                                           text=f"Покупка/продажа:\n"
+                                                f"{txt}",
+                                           parse_mode='html')
+        except Exception as ex:
+            print(ex)
 
     scheduler.add_job(daily_send, trigger='cron', hour='9', minute='00')
+    scheduler.add_job(daily_send, trigger='cron', hour='14', minute='00')
+    scheduler.add_job(daily_send, trigger='cron', hour='18', minute='00')
+    scheduler.add_job(daily_send, trigger='cron', hour='21', minute='00')
+
     scheduler.start()
+
     executor.start_polling(dp, skip_updates=True)
 
 
