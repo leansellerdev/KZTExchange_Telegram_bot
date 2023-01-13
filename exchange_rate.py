@@ -8,21 +8,18 @@ headers = {"User-Agent": ua}
 responce = requests.get(URL, headers=headers)
 
 
-def get_sell_rates():
+def get_buy_rates():
 
     soup = BeautifulSoup(responce.content, 'html.parser')
+    block = soup.find('table')
 
-    try:
-        USD = soup.find_all("td", {"class": "sell delta-neutral"})[0].text
-        EUR = soup.find_all("td", {"class": "sell delta-neutral"})[1].text
-        RUB = soup.find_all("td", {"class": "sell delta-neutral"})[2].text
-        KGS = soup.find_all("td", {"class": "sell delta-neutral"})[3].text
-        GBP = soup.find_all("td", {"class": "sell delta-neutral"})[4].text
-        CNY = soup.find_all("td", {"class": "sell delta-neutral"})[5].text
-        GOLD = soup.find_all("td", {"class": "sell delta-neutral"})[6].text
-    except Exception as ex:
-        print(ex)
-        print('В данный момент невозможно обновить курс, попробуйте позже!')
+    USD = block.find_all('td')[0].text
+    EUR = block.find_all('td')[3].text
+    RUB = block.find_all('td')[6].text
+    KGS = block.find_all('td')[9].text
+    GBP = block.find_all('td')[12].text
+    CNY = block.find_all('td')[15].text
+    GOLD = block.find_all('td')[18].text
 
     EXCHANGES = {"USD": USD,
                  "EUR": EUR,
@@ -37,21 +34,18 @@ def get_sell_rates():
     return EXCHANGES
 
 
-def get_buy_rates():
+def get_sell_rates():
 
     soup = BeautifulSoup(responce.content, 'html.parser')
+    block = soup.find('table')
 
-    try:
-        USD = soup.find_all("td", {"class": "buy delta-neutral"})[0].text
-        EUR = soup.find_all("td", {"class": "buy delta-neutral"})[1].text
-        RUB = soup.find_all("td", {"class": "buy delta-neutral"})[2].text
-        KGS = soup.find_all("td", {"class": "buy delta-neutral"})[3].text
-        GBP = soup.find_all("td", {"class": "buy delta-neutral"})[4].text
-        CNY = soup.find_all("td", {"class": "buy delta-neutral"})[5].text
-        GOLD = soup.find_all("td", {"class": "buy delta-neutral"})[6].text
-    except Exception as ex:
-        print(ex)
-        print('В данный момент невозможно обновить курс, попробуйте позже!')
+    USD = block.find_all('td')[2].text
+    EUR = block.find_all('td')[5].text
+    RUB = block.find_all('td')[8].text
+    KGS = block.find_all('td')[11].text
+    GBP = block.find_all('td')[14].text
+    CNY = block.find_all('td')[17].text
+    GOLD = block.find_all('td')[20].text
 
     EXCHANGES = {"USD": USD,
                  "EUR": EUR,
@@ -69,25 +63,15 @@ def get_buy_rates():
 def get_daily_send_rates():
 
     soup = BeautifulSoup(responce.content, 'html.parser')
+    block = soup.find('table')
 
-    try:
-        USD = [soup.find_all("td", {"class": "buy delta-neutral"})[0].text,
-               soup.find_all("td", {"class": "sell delta-neutral"})[0].text]
-        EUR = [soup.find_all("td", {"class": "buy delta-neutral"})[1].text,
-               soup.find_all("td", {"class": "sell delta-neutral"})[1].text]
-        RUB = [soup.find_all("td", {"class": "buy delta-neutral"})[2].text,
-               soup.find_all("td", {"class": "sell delta-neutral"})[2].text]
-        KGS = [soup.find_all("td", {"class": "buy delta-neutral"})[3].text,
-               soup.find_all("td", {"class": "sell delta-neutral"})[3].text]
-        GBP = [soup.find_all("td", {"class": "buy delta-neutral"})[4].text,
-               soup.find_all("td", {"class": "sell delta-neutral"})[4].text]
-        CNY = [soup.find_all("td", {"class": "buy delta-neutral"})[5].text,
-               soup.find_all("td", {"class": "sell delta-neutral"})[5].text]
-        GOLD = [soup.find_all("td", {"class": "buy delta-neutral"})[6].text,
-                soup.find_all("td", {"class": "sell delta-neutral"})[6].text]
-    except Exception as ex:
-        print(ex)
-        print('В данный момент невозможно обновить курс, попробуйте позже!')
+    USD = [block.find_all('td')[0].text, block.find_all('td')[2].text]
+    EUR = [block.find_all('td')[3].text, block.find_all('td')[5].text]
+    RUB = [block.find_all('td')[6].text, block.find_all('td')[8].text]
+    KGS = [block.find_all('td')[9].text, block.find_all('td')[11].text]
+    GBP = [block.find_all('td')[12].text, block.find_all('td')[14].text]
+    CNY = [block.find_all('td')[15].text, block.find_all('td')[17].text]
+    GOLD = [block.find_all('td')[18].text, block.find_all('td')[20].text]
 
     EXCHANGES = {"USD": USD,
                  "EUR": EUR,
