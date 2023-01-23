@@ -41,10 +41,10 @@ def start_bot():
 
         await bot.send_message(message.from_user.id,
                                text=f'{emojize(":brain:")}Данный бот покажет тебе актуальный курс валют по '
-                                    f'отношению к тенге.\n {emojize(":calendar:")}Ты можешь подписаться на ежедневную '
-                                    f'рассылку.\n {emojize(":watch:")}Рассылка осуществляется '
+                                    f'отношению к тенге\n\n {emojize(":calendar:")}Ты можешь подписаться на ежедневную '
+                                    f'рассылку\n\n {emojize(":watch:")}Рассылка осуществляется '
                                     f'в <b>9:00</b>, <b>14:00</b> и <b>18:00</b>'
-                                    f' часов по Алматы каждый день.',
+                                    f' часов по Алматы каждый день',
                                parse_mode='html')
 
     @dp.message_handler(commands=['subscribe'])
@@ -76,7 +76,7 @@ def start_bot():
         txt = ''
 
         for key, values in daily_rates.items():
-            txt += f"<b>{key}</b> : {float(values[0]), float(values[1])}\n"
+            txt += f"<b>{key}</b> : {float(values[0])}, {float(values[1])}\n"
 
         await bot.send_message(message.from_user.id,
                                text=f"Покупка/продажа:\n"
@@ -100,11 +100,11 @@ def start_bot():
 
         for keys, values in sell_rates.items():
             if message.text.upper() == keys:
-                sell_txt.append(f'<b>KZT</b>/<b>{keys}</b>: <b>{values}</b>')
+                sell_txt.append(f'<b>KZT</b>/<b>{keys}</b>: <b>{values}₸</b>')
 
         for key, value in buy_rates.items():
             if message.text.upper() == key:
-                buy_txt.append(f'<b>KZT</b>/<b>{key}</b>: <b>{value}</b>')
+                buy_txt.append(f'<b>KZT</b>/<b>{key}</b>: <b>{value}₸</b>')
 
         await bot.send_message(message.chat.id,
                                text=f'{current_time}\n'
@@ -119,19 +119,18 @@ def start_bot():
             chat_ids = db.get_subscription()
 
             daily_rates = get_daily_send_rates()
-            txt = ''
 
             for chat_id in chat_ids:
+                txt = ''
                 if chat_id[2]:
                     for key, values in daily_rates.items():
-                        txt += f"<b>{key}</b> : {float(values[0]), float(values[1])}\n"
+                        txt += f"<b>{key}</b> : {float(values[0])}, {float(values[1])}\n"
 
                     await bot.send_message(chat_id[1],
                                            text=f"{emojize(':calendar:')}ЕЖЕДНЕВНАЯ РАССЫЛКА{emojize(':calendar:')}\n"
                                                 f"Покупка/продажа:\n"
                                                 f"{txt}",
                                            parse_mode='html')
-                    txt = ''
         except Exception as ex:
             print(ex)
 
