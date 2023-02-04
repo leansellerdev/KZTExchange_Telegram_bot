@@ -106,12 +106,16 @@ def start_bot():
             if message.text.upper() == key:
                 buy_txt.append(f'<b>KZT</b>/<b>{key}</b>: <b>{value}₸</b>')
 
-        await bot.send_message(message.chat.id,
-                               text=f'{current_time}\n'
-                                    f'{emoji}{buy_txt[0]}{emoji}\n'
-                                    f'{emoji}{sell_txt[0]}{emoji}',
-                               reply_markup=markup,
-                               parse_mode='html')
+        try:
+            await bot.send_message(message.chat.id,
+                                   text=f'{current_time}\n'
+                                        f'{emoji}{buy_txt[0]}{emoji}\n'
+                                        f'{emoji}{sell_txt[0]}{emoji}',
+                                   reply_markup=markup,
+                                   parse_mode='html')
+        except Exception as ex:
+            await bot.send_message(message.chat.id, "Упс, это не похоже на валюту")
+            print("Это не похоже на валюту", ex)
 
     async def daily_send():
 
