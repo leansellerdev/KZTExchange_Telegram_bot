@@ -1,11 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
-from misc.config import URL
+from misc.config import MIG_URL
 from fake_useragent import UserAgent
 
 ua = UserAgent().random
 headers = {"User-Agent": ua}
-responce = requests.get(URL, headers=headers)
+responce = requests.get(MIG_URL, headers=headers)
 
 
 def get_buy_rates():
