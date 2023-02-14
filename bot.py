@@ -3,7 +3,7 @@ from aiogram import Bot, Dispatcher
 from aiogram.types import Message
 from aiogram.filters import Text, Command
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from misc.config import TOKEN
+from misc.config_data import load_config
 from models.data_base import SQLighter
 from keyboards.currencies_buttons import currency_keyboard
 from emoji import emojize
@@ -11,11 +11,24 @@ from api.exchange_rate import get_sell_rates, get_buy_rates, get_daily_send_rate
 
 
 def start_bot():
-    bot = Bot(token=TOKEN)
+
+    config = load_config(".env")
+    bot_token = config.tg_bot.token
+    super_admin = config.tg_bot.admin_ids[0]
+
+    bot = Bot(token=bot_token)
     dp = Dispatcher()
     scheduler = AsyncIOScheduler(timezone='Asia/Almaty')
 
     db = SQLighter('db.db')
+
+    """Admin notification function"""
+
+    async def admin_message_notification(user_id: int, name: str):
+
+        await bot.send_message(super_admin, f'Пользователь: <b>{name}</b>,\n'
+                                            f'ID: <b>{user_id}</b> сделал запрос',
+                               parse_mode='html')
 
     """Welcome message"""
 
@@ -29,6 +42,8 @@ def start_bot():
                                     f" Выбери валюту и я отправлю тебе актуальный курс обмена.",
                                reply_markup=currency_keyboard,
                                parse_mode="html")
+
+        await admin_message_notification(message.from_user.id, message.from_user.first_name)
 
     """Send info"""
 

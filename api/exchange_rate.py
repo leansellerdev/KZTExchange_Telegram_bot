@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from misc.config import MIG_URL
+from misc.config_data import MIG_URL
 from fake_useragent import UserAgent
 
 ua = UserAgent().random

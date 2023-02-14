@@ -1,4 +1,4 @@
-from misc.config import API_URL
+from misc.config_data import API_URL
 import requests
 
 

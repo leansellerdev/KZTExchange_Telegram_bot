@@ -1,4 +1,4 @@
-misc/config.py
+misc/config_data.py
 .venv
 ExchangeBot/misc/testing.py
 .env
