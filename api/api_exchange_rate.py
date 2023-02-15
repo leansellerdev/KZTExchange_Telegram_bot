@@ -2,7 +2,7 @@ from misc.config_data import API_URL
 import requests
 
 
-def get_past_exchange(date: str):
+def get_api_exchange(date: str):
 
     currency_dict = {"usd": '',
                      "eur": '',
