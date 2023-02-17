@@ -13,6 +13,8 @@ successful_unsub = "Вы успешно отписались от ежеднев
 already_unsubed = "Вы уже отписались от ежедневной рассылки!"
 not_subed = "Вы не подписаны на ежедневную рассылку!"
 
+do_not_understand = "Простите, я не понимаю"
+
 
 # subscription notification
 def start_notification(name: str, user_id: int):
