@@ -1,11 +1,14 @@
 import requests
 from bs4 import BeautifulSoup
-from misc.config_data import MIG_URL
 from fake_useragent import UserAgent
+from misc.config_data import load_config
 
 ua = UserAgent().random
 headers = {"User-Agent": ua}
-responce = requests.get(MIG_URL, headers=headers)
+
+config = load_config(".env")
+api = config.apis.mig_api
+responce = requests.get(api, headers=headers)
 
 
 def get_buy_rates():
