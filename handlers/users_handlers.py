@@ -4,10 +4,8 @@ from aiogram.filters import Text, Command
 from keyboards.currencies_buttons import kb_builder
 from bot import db
 from bot import admin_message_notification
-from api.mig_exchange_rate import get_sell_rates, get_buy_rates
-from api.google_exchange_rate import get_google_exchange
+from services.services import get_text_to_send, get_rates_to_date_text
 from bot_lexicon.lexicon_ru import *
-from datetime import datetime
 
 router: Router = Router()
 
@@ -67,43 +65,19 @@ async def unsubscribe(message: Message):
                                                                   message.from_user.id))
 
 
-# Function for sending all of currencies
-@router.message(Command(commands=['show_all']))
-async def show_all(message: Message):
-    daily_rates = get_google_exchange("latest")
-    txt = ''
+# Function for sending exchange rates to past days
+@router.message(Text(text=["Позавчера", "Вчера", "Сегодня"],
+                     ignore_case=True))
+async def send_rates_to_date(message: Message):
+    text = get_rates_to_date_text(message.text)
 
-    for key, values in daily_rates.items():
-        txt += f"<b>{key.upper()}</b> : {round(values, 2)}\n"
-
-    await message.answer(text=f"{txt}",
-                         parse_mode='html')
+    await message.answer(text=text, parse_mode="html")
 
 
 # Sending exchange rates
 @router.message(Text(text=["USD", "EUR", "RUB", "KGS", "GBP", "CNY", "GOLD"],
                      ignore_case=True))
 async def send_exchange_rates(message: Message):
-    current_time = datetime.now().strftime("%d:%m:%Y %H:%M")
+    text = get_text_to_send(message.text)
 
-    sell_rates = get_sell_rates()
-    buy_rates = get_buy_rates()
-
-    sell_txt = []
-    buy_txt = []
-
-    for keys, values in sell_rates.items():
-        if message.text.upper() == keys:
-            sell_txt.append(f'<b>{keys}/KZT</b>: {values}₸')
-
-    for key, value in buy_rates.items():
-        if message.text.upper() == key:
-            buy_txt.append(f'<b>{key}/KZT</b>: {value}₸')
-
-    try:
-        await message.answer(text=f'{current_time}\n'
-                                  f'Покупка {buy_txt[0]}\n'
-                                  f'Продажа {sell_txt[0]}',
-                             parse_mode='html')
-    except Exception as ex:
-        print("Это не похоже на валюту", ex)
+    await message.answer(text=text, parse_mode="html")
