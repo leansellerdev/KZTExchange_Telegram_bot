@@ -4,6 +4,7 @@ from fake_useragent import UserAgent
 from bs4 import BeautifulSoup
 
 
+# Класс для получения котировок
 class Exchange:
 
     config = load_config(".env")
@@ -29,8 +30,8 @@ class Exchange:
                          "cny": ''}
 
         for currency in currency_dict.keys():
-            responce = requests.get(self.__google_api + f"{date}/currencies/{currency}.json")
-            json_data = responce.json()
+            response = requests.get(self.__google_api + f"{date}/currencies/{currency}.json")
+            json_data = response.json()
             currency_dict[currency] = json_data[currency]["kzt"]
 
         return currency_dict

@@ -1,9 +1,8 @@
 from api.api import rates
 from datetime import datetime
-import json
+from services.quotes_data import get_data
 
-file = open("services/quotes.json")
-data = json.load(file)
+data = get_data()
 
 
 # Function for sending exchange rates every day with subscription
@@ -28,7 +27,7 @@ async def daily_send(bot, db):
 
 
 def get_text_to_send(value: str):
-    current_time = datetime.now().strftime("%d:%m:%Y %H:%M")
+    current_time = data["update_time"]
     value = value.upper()
 
     mig_rates = data["mig"]

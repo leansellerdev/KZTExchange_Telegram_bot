@@ -15,8 +15,8 @@ router: Router = Router()
 async def send_welcome(message: Message):
     user_name = message.from_user.first_name
 
-    await message.answer(text=f"Привет, <b>{user_name}!</b>"
-                              f" Выбери валюту и я отправлю тебе актуальный курс обмена.",
+    await message.answer(text=f"Здравствуйте, <b>{user_name}!</b>"
+                              f" Выберите валюту:\n\n{aq_res}",
                          reply_markup=kb_builder.as_markup(
                              resize_keyboard=True
                          ),
