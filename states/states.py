@@ -5,5 +5,6 @@ storage: MemoryStorage = MemoryStorage()
 
 
 class FSMExchangeRates(StatesGroup):
+    choose_action = State()
     choose_currency = State()
     work_with_currency = State()
