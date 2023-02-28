@@ -1,8 +1,12 @@
 from api.api import rates
 from datetime import datetime
-from services.quotes_data import get_data
+from services.quotes_data import data
 
-data = get_data()
+data = data.get_data()
+mig_rates = data["mig"]
+
+sell_rates = mig_rates["sell"]
+buy_rates = mig_rates["buy"]
 
 
 # Function for sending exchange rates every day with subscription
@@ -30,11 +34,6 @@ def get_text_to_send(value: str):
     current_time = data["update_time"]
     value = value.upper()
 
-    mig_rates = data["mig"]
-
-    sell_rates = mig_rates["sell"]
-    buy_rates = mig_rates["buy"]
-
     txt = f"{current_time}\nПокупка <b>{value}/KZT</b>: {buy_rates[value]}\nПродажа <b>{value}/KZT</b>: {sell_rates[value]}"
 
     return txt
@@ -57,3 +56,13 @@ def get_rates_to_date_text(day: str):
         txt += f"<b>{key.upper()}</b>: {value}\n"
 
     return f"Курс валют за {day}:\n{txt}"
+
+
+def get_currency_result_text(summa: str, rate: str):
+
+    sell = float(sell_rates[rate.upper()])
+    buy = float(buy_rates[rate.upper()])
+
+    result = f"Покупка {summa} {rate} = {int(summa)*buy} KZT\nПродажа {summa} {rate} = {int(summa)*sell} KZT"
+
+    return result
