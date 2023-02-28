@@ -2,3 +2,5 @@ misc/testing.py
 .venv
 ExchangeBot/misc/testing.py
 .env
+.idea
+.xml
