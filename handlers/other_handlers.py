@@ -1,3 +1,8 @@
+"""
+Handle all of unexpected things
+"""
+
+
 from aiogram import Router
 from aiogram.types import Message
 from bot_lexicon.lexicon_ru import do_not_understand

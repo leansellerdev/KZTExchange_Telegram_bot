@@ -1,4 +1,7 @@
 
+"""Here are some phrases that getting use in bot handlers"""
+
+
 # info phrase
 info_text = f"""🧠Данный бот покажет тебе актуальный курс валют по 
        отношению к тенге

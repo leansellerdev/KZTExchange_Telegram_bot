@@ -4,8 +4,15 @@ from fake_useragent import UserAgent
 from bs4 import BeautifulSoup
 
 
-# Класс для получения котировок
 class Exchange:
+
+    """
+    Class is using API and MIG.kz for next work with quotes
+
+    get_google_exchange - this method is using API for getting google quotes
+
+    get_mig_exchange - this method is using bs4 and request for scrap info from MIG.kz
+    """
 
     config = load_config(".env")
     ua = UserAgent().random

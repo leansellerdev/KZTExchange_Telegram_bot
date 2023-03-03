@@ -1,3 +1,8 @@
+"""
+This class is using for work with env variables
+"""
+
+
 from dataclasses import dataclass
 from environs import Env
 

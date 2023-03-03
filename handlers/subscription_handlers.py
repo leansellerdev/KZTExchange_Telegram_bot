@@ -1,3 +1,8 @@
+"""
+Handle subscription messages
+"""
+
+
 from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Text, Command
@@ -9,6 +14,7 @@ db = SQLighter("db.db")
 router: Router = Router()
 
 
+@router.message(Command(commands=['subscribe']))
 @router.message(Text(text=["Подписаться"]))
 async def subscribe(message: Message):
     if not db.subscriber_exists(message.from_user.id):

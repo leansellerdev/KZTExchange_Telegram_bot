@@ -3,7 +3,11 @@ import json
 from api.api import rates
 
 
-class Data:
+class QuotesData:
+
+    """
+    This class is using for work with quotes and write/read it to json file
+    """
 
     google_data = rates.get_google_exchange('latest')
     mig_data = rates.get_mig_exchange()
@@ -28,4 +32,4 @@ class Data:
             return json.load(file)
 
 
-data = Data()
+data = QuotesData()

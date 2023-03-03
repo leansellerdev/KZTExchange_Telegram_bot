@@ -1,3 +1,9 @@
+"""
+This class is using for work with SQLite database,
+subscribe and unsubscribe funcs are using it
+"""
+
+
 import sqlite3
 
 

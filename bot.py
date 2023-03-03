@@ -1,3 +1,8 @@
+"""
+This is main file with bot configuration, logger, router, database and scheduler
+"""
+
+
 import asyncio
 import logging
 
@@ -8,6 +13,7 @@ from handlers import users_handlers, other_handlers, subscription_handlers, curr
 from models.data_base import SQLighter
 from services.services import daily_send
 from services.quotes_data import data
+from states.states import storage
 
 # Инициализируем логгер
 logger = logging.getLogger(__name__)
@@ -46,12 +52,12 @@ async def main():
     logger.info('Starting Bot')
 
     # Инициализируем диспетчер
-    dp = Dispatcher()
+    dp = Dispatcher(storage=storage)
 
     # Регистриуем роутеры в диспетчере
     dp.include_router(users_handlers.router)
-    dp.include_router(currency_handlers.router)
     dp.include_router(subscription_handlers.router)
+    dp.include_router(currency_handlers.router)
     dp.include_router(other_handlers.router)
 
     # Собираем информацию о курсах валют и сохраняем ее в файл

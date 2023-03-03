@@ -1,3 +1,8 @@
+"""
+Main services
+"""
+
+
 from api.api import rates
 from datetime import datetime
 from services.quotes_data import data
@@ -58,11 +63,11 @@ def get_rates_to_date_text(day: str):
     return f"Курс валют за {day}:\n{txt}"
 
 
-def get_currency_result_text(summa: str, rate: str):
+def get_currency_result_text(summa: float, rate: str):
 
     sell = float(sell_rates[rate.upper()])
     buy = float(buy_rates[rate.upper()])
 
-    result = f"Покупка {summa} {rate} = {int(summa)*buy} KZT\nПродажа {summa} {rate} = {int(summa)*sell} KZT"
+    result = f"Покупка {summa} {rate.upper()} = {int(summa)*buy} KZT\nПродажа {summa} {rate.upper()} = {int(summa)*sell} KZT"
 
     return result
