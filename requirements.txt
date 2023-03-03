@@ -9,3 +9,4 @@ bs4~=0.0.1
 python-dotenv~=0.21.1
 environs~=9.5.0
 asyncio~=3.4.3
+redis~=4.5.1
