@@ -7,7 +7,7 @@ from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Text, Command
 from models.data_base import SQLighter
-from bot import admin_message_notification
+from admin.utils import admin_message_notification
 from bot_lexicon.lexicon_ru import *
 
 db = SQLighter("db.db")
