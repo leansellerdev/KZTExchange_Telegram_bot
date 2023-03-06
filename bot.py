@@ -6,38 +6,14 @@ This is main file with bot configuration, logger, router, database and scheduler
 import asyncio
 import logging
 
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from aiogram import Bot, Dispatcher
-from misc.config_data import Config, load_config
-from handlers import users_handlers, other_handlers, subscription_handlers, currency_handlers
-from models.data_base import SQLighter
-from services.services import daily_send
+from setup import *
 from services.quotes_data import data
-from states.states import storage
+from services.services import daily_send
+from handlers import users_handlers, other_handlers, subscription_handlers, currency_handlers, admin_handlers
+
 
 # Инициализируем логгер
 logger = logging.getLogger(__name__)
-
-# Загружаем конфиг в переменную config
-config: Config = load_config(".env")
-# Инициализируем бот
-bot: Bot = Bot(config.tg_bot.token,
-               parse_mode='HTML')
-
-# Инициализируем базу данных
-db: SQLighter = SQLighter("db.db")
-
-# Создаем объект шедулера
-scheduler: AsyncIOScheduler = AsyncIOScheduler(timezone='Asia/Almaty')
-
-# Указываем супер-админа
-super_admin: config = config.tg_bot.admin_ids[0]
-
-
-# Admin notification function
-async def admin_message_notification(func):
-    await bot.send_message(super_admin, text=func,
-                           parse_mode='html')
 
 
 # Функция конфигурирования и запуска бота
@@ -51,10 +27,8 @@ async def main():
     # Выводим в консоль информацию о начале запуска бота
     logger.info('Starting Bot')
 
-    # Инициализируем диспетчер
-    dp = Dispatcher(storage=storage)
-
     # Регистриуем роутеры в диспетчере
+    dp.include_router(admin_handlers.admin_router)
     dp.include_router(users_handlers.router)
     dp.include_router(subscription_handlers.router)
     dp.include_router(currency_handlers.router)
