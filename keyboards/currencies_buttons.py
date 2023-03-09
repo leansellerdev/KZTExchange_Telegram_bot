@@ -10,7 +10,7 @@ from aiogram.types import KeyboardButton
 currency_kb_builder: ReplyKeyboardBuilder = ReplyKeyboardBuilder()
 
 # Список с валютами
-currency_list = ['USD', 'EUR', 'RUB', 'KGS', 'GBP', 'CNY', 'GOLD', 'Назад']
+currency_list = ['🇺🇸 USD', '🇪🇺 EUR', '🇷🇺 RUB', '🇰🇬 KGS', '🇬🇧 GBP', '🇨🇳 CNY', '🧈 GOLD', '🔙 Назад']
 buttons: list[KeyboardButton] = [KeyboardButton(text=value) for value in currency_list]
 
 # Создаем кнопки
