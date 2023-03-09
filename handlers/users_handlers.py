@@ -22,7 +22,7 @@ async def start(message: Message, state: FSMContext):
 
     await state.set_state(FSMExchangeRates.choose_action)
     await message.answer(text=f"Здравствуйте, <b>{user_name}!</b>"
-                              f" Выберите действие",
+                              f" Выберите действие:",
                          reply_markup=start_kb_builder.as_markup(
                              resize_keyboard=True
                          ),
@@ -36,7 +36,7 @@ async def info(message: Message):
                          parse_mode='html')
 
 
-@router.message(Text(text=["Назад"]))
+@router.message(Text(text=["🔙 Назад"]))
 async def get_back(message: Message, state: FSMContext):
     current_state = await state.get_state()
     if current_state is None:
