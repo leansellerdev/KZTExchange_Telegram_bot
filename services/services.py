@@ -37,7 +37,7 @@ async def daily_send(bot, db):
 
 def get_text_to_send(value: str):
     current_time = data["update_time"]
-    value = value.upper()
+    value = value[2:].upper().strip()
 
     txt = f"{current_time}\nПокупка <b>{value}/KZT</b>: {buy_rates[value]}\nПродажа <b>{value}/KZT</b>: {sell_rates[value]}"
 
@@ -64,10 +64,11 @@ def get_rates_to_date_text(day: str):
 
 
 def get_currency_result_text(summa: float, rate: str):
+    rate = rate.upper().strip()
 
-    sell = float(sell_rates[rate.upper()])
-    buy = float(buy_rates[rate.upper()])
+    sell = float(sell_rates[rate])
+    buy = float(buy_rates[rate])
 
-    result = f"Покупка {summa} {rate.upper()} = {int(summa)*buy} KZT\nПродажа {summa} {rate.upper()} = {int(summa)*sell} KZT"
+    result = f"Покупка {summa} <b>{rate}</b> = {int(summa)*buy} <b>KZT</b>\nПродажа {summa} <b>{rate}</b> = {int(summa)*sell} <b>KZT</b>"
 
     return result
