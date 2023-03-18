@@ -27,7 +27,7 @@ async def daily_send(bot, db):
                 for key, value in daily_rates.items():
                     txt += f"<b>{key.upper()}</b>: {value}\n"
 
-                await bot.send_message(chat_id[1],
+                await bot.send_message(chat_id[0],
                                        text=f"🗓ЕЖЕДНЕВНАЯ РАССЫЛКА🗓\n"
                                             f"{txt}",
                                        parse_mode='html')
