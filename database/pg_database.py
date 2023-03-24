@@ -38,6 +38,14 @@ class PostgreSQL:
 
             return self.cursor.fetchall()
 
+    def get_users(self):
+        with self.connection:
+            self.cursor.execute(
+                """SELECT * FROM users;"""
+            )
+
+            return self.cursor.fetchall()
+
     def get_user_reg_date(self, user_id):
         """Получаем дату присоединения пользователя"""
         with self.connection:

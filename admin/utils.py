@@ -1,8 +1,5 @@
 from setup import super_admin, bot
-from services.services import get_text_to_send, get_currency_result_text
-import random
-
-values = ["USD", "EUR", "RUB", "KGS", "GBP", "CNY", "GOLD"]
+from setup import db
 
 
 # Admin notification function
@@ -11,13 +8,16 @@ async def admin_message_notification(func):
                            parse_mode='html')
 
 
-def admin_test():
-    random_value = random.choice(values)
-    random_int = random.randint(1, 100)
+def get_users():
+    data = db.get_users()
 
-    try:
-        get_text_to_send(random_value)
-        get_currency_result_text(random_int, random_value)
-        return "Все работает"
-    except ValueError as ve:
-        return f"Что-то сломалось! Ошибка:\n{ve}"
+    user_counter = 0
+    subed_user_counter = 0
+
+    for user in data:
+        user_counter += 1
+
+        if user[2]:
+            subed_user_counter += 1
+
+    return f"Общее количество пользователей: {user_counter}\nКоличество подписанных пользователей: {subed_user_counter}"
