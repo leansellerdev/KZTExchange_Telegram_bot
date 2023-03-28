@@ -1,0 +1,29 @@
+version: '2.15.1'
+services:
+  redis:
+    image: redis:alpine
+    command:
+      - redis-server
+    env_file:
+      - ./.env
+    ports:
+      - "6379:6379"
+  db:
+    image: postgres:15.2
+    env_file:
+      - ./.env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  bot:
+    build: .
+    command: sh -c "python -m bot"
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+      - redis
+
+volumes:
+  pgdata:
