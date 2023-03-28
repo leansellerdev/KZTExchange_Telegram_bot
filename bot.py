@@ -1,5 +1,5 @@
 """
-This is main file with bot configuration, logger, router, database and scheduler
+This is main file with core configuration, logger, router, database and scheduler
 """
 
 
@@ -7,9 +7,9 @@ import asyncio
 import logging
 
 from setup import *
-from services.quotes_data import data
-from services.services import daily_send
-from handlers import users_handlers, other_handlers, subscription_handlers, currency_handlers, admin_handlers
+from core.services.quotes_data import data
+from core.services.services import daily_send
+from core.handlers import users_handlers, subscription_handlers, other_handlers, admin_handlers, currency_handlers
 
 
 # Инициализируем логгер

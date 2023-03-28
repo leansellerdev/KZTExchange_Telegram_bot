@@ -1,8 +1,8 @@
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from aiogram import Bot, Dispatcher
-from misc.config_data import Config, load_config
-from database.pg_database import PostgreSQL
-from states.states import storage
+from core.misc.config_data import Config, load_config
+from core.database.pg_database import PostgreSQL
+from core.states.states import storage
 
 # Загружаем конфиг в переменную config
 config: Config = load_config(".env")
