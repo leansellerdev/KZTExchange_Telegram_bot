@@ -6,9 +6,9 @@ Handle subscription messages
 from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Text, Command
-from database.pg_database import PostgreSQL
-from admin.utils import admin_message_notification
-from bot_lexicon.lexicon_ru import *
+from core.database.pg_database import PostgreSQL
+from core.admin.utils import admin_message_notification
+from core.bot_lexicon.lexicon_ru import *
 
 db = PostgreSQL()
 router: Router = Router()

@@ -3,9 +3,9 @@ Main services
 """
 
 
-from api.api import rates
+from core.api.api import rates
 from datetime import datetime
-from services.quotes_data import data
+from core.services.quotes_data import data
 
 data = data.get_data()
 mig_rates = data["mig"]

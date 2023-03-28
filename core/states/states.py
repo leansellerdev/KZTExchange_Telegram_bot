@@ -2,7 +2,7 @@ from aiogram.fsm.storage.redis import RedisStorage
 from aiogram.fsm.state import State, StatesGroup
 from redis.asyncio.client import Redis
 
-redis: Redis = Redis(port=32769, password="redispw")
+redis: Redis = Redis(port=32768, password="redispw")
 storage: RedisStorage = RedisStorage(redis=redis)
 
 
@@ -11,7 +11,7 @@ class FSMExchangeRates(StatesGroup):
     """
     Bot states
 
-    choose_action - works when bot handled /start command and
+    choose_action - works when core handled /start command and
     lets user choose 1 of 2 action(subscribe or work with currencies)
 
     choose_currency - works after user chose "work with currencies" action and

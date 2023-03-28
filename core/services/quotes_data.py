@@ -1,6 +1,6 @@
 from datetime import datetime
 import json
-from api.api import rates
+from core.api.api import rates
 
 
 class QuotesData:
@@ -12,7 +12,7 @@ class QuotesData:
     google_data = rates.get_google_exchange('latest')
     mig_data = rates.get_mig_exchange()
     response_time = datetime.now().strftime("%d:%m:%Y %H:%M")
-    file = "services/quotes.json"
+    file = "core/services/quotes.json"
 
     def collect_data(self):
 
@@ -22,7 +22,7 @@ class QuotesData:
     def save_data(self):
         json_object = self.collect_data()
 
-        with open("services/quotes.json", "w") as outfile:
+        with open(self.file, "w") as outfile:
             outfile.write(json_object)
 
     def get_data(self):

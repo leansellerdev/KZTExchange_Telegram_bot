@@ -1,5 +1,5 @@
 
-"""Here are some phrases that getting use in bot handlers"""
+"""Here are some phrases that getting use in core handlers"""
 
 
 # info phrase

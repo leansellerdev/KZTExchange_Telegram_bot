@@ -1,4 +1,4 @@
-from misc.config_data import load_config
+from core.misc.config_data import load_config
 import requests
 from fake_useragent import UserAgent
 from bs4 import BeautifulSoup

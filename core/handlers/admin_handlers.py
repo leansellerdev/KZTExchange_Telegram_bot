@@ -2,7 +2,7 @@ from aiogram import Router
 from aiogram.filters import Command
 from aiogram.types import Message
 from setup import super_admin
-from admin.utils import get_users
+from core.admin.utils import get_users
 
 admin_router: Router = Router()
 

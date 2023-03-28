@@ -1,7 +1,7 @@
 import datetime
 
 import psycopg2
-from misc.config_data import load_config
+from core.misc.config_data import load_config
 
 config = load_config(".env")
 

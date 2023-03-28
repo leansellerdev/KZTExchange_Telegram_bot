@@ -7,10 +7,10 @@ from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Text, Command
 from aiogram.fsm.context import FSMContext
-from states.states import FSMExchangeRates
-from keyboards.action_buttons import start_kb_builder
+from core.states.states import FSMExchangeRates
+from core.keyboards.action_buttons import start_kb_builder
+from core.bot_lexicon.lexicon_ru import info_text
 # from services.services import get_rates_to_date_text
-from bot_lexicon.lexicon_ru import *
 
 router: Router = Router()
 

@@ -6,13 +6,13 @@ Handlers that works with all currencies operations
 from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Text
-from services.services import get_text_to_send, get_currency_result_text
+from core.services.services import get_text_to_send, get_currency_result_text
 from aiogram.fsm.context import FSMContext
-from states.states import FSMExchangeRates
-from keyboards.currencies_buttons import currency_kb_builder
-from keyboards.action_buttons import change_currency_builder
-from bot_lexicon.lexicon_ru import aq_res
-from utils.utils import is_float
+from core.states.states import FSMExchangeRates
+from core.keyboards.currencies_buttons import currency_kb_builder
+from core.keyboards.action_buttons import change_currency_builder
+from core.bot_lexicon.lexicon_ru import aq_res
+from core.utils.utils import is_float
 
 router: Router = Router()
 
