@@ -37,6 +37,9 @@ async def main():
     # Собираем информацию о курсах валют и сохраняем ее в файл
     data.save_data()
 
+    # Создаем таблицу в базе данных, если ее нет
+    db.create_users_table()
+
     # Добавляем задания к планеру
     scheduler.add_job(data.save_data, trigger='cron', hour=8, minute=55)
     scheduler.add_job(daily_send, args=[bot, db], trigger='cron', hour=9, minute=0)

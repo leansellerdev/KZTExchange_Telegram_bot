@@ -12,13 +12,24 @@ class PostgreSQL:
 
     def __init__(self):
         """Подключаемся к БД и сохраняем курсор соединения"""
-        self.connection = psycopg2.connect(
+        self.connection: psycopg2 = psycopg2.connect(
             host=config.data_base.host,
             user=config.data_base.user,
             password=config.data_base.password,
             database=config.data_base.db_name
         )
         self.cursor = self.connection.cursor()
+
+    def create_users_table(self):
+        with self.connection:
+            self.cursor.execute(
+                """CREATE TABLE IF NOT EXISTS users 
+                (user_id INTEGER PRIMARY KEY UNIQUE NOT NULL,
+                 username VARCHAR(50) NOT NULL,
+                 status BOOLEAN NOT NULL);"""
+            )
+
+            self.connection.commit()
 
     def get_server_version(self):
         with self.connection:
@@ -78,12 +89,12 @@ class PostgreSQL:
             result = self.cursor.fetchone()
             return bool(result[0])
 
-    def add_subscriber(self, user_id, user_name, status=False, reg_date=today):
+    def add_subscriber(self, user_id, user_name, status=False):
         """Добавляем нового юзера"""
         with self.connection:
             self.cursor.execute(
-                """INSERT INTO users (user_id, user_name, status, reg_date)
-                   VALUES (%s, %s, %s, %s);""", (user_id, user_name, status, reg_date)
+                """INSERT INTO users (user_id, username, status)
+                   VALUES (%s, %s, %s);""", (user_id, user_name, status)
             )
 
             self.connection.commit()
