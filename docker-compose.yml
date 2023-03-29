@@ -5,13 +5,15 @@ services:
     command:
       - redis-server
     env_file:
-      - ./.env
+      - ./.env_docker
     ports:
       - "6379:6379"
   db:
     image: postgres:15.2
+    environment:
+      POSTGRES_PASSWORD: PG_PASSWORD
     env_file:
-      - ./.env
+      - ./.env_docker
     volumes:
       - pgdata:/var/lib/postgresql/data
     ports:
@@ -20,7 +22,7 @@ services:
     build: .
     command: sh -c "python -m bot"
     env_file:
-      - ./.env
+      - ./.env_docker
     depends_on:
       - db
       - redis
