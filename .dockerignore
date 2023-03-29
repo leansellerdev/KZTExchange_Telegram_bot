@@ -72,6 +72,8 @@ target/
 
 # Virtual environment
 .env
+.env_docker
+.env.example
 .venv/
 venv/
 
