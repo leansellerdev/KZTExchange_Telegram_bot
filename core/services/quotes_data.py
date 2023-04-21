@@ -31,5 +31,7 @@ class QuotesData:
         if file:
             return json.load(file)
 
+        file.close()
+
 
 data = QuotesData()
