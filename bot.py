@@ -8,7 +8,7 @@ import logging
 
 from setup import *
 from core.services.quotes_data import data
-from core.services.services import daily_send
+from core.services.services import daily_send, daily_send_text
 from core.handlers import users_handlers, subscription_handlers, other_handlers, admin_handlers, currency_handlers
 
 

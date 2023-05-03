@@ -14,25 +14,30 @@ sell_rates = mig_rates["sell"]
 buy_rates = mig_rates["buy"]
 
 
+def daily_send_text():
+
+    daily_rates: dict = data["google"]
+    pairs_list: list = []
+    for key, value in daily_rates.items():
+        pairs_list.append(f"<b>{key.upper()}</b>: {value}\n")
+
+    txt = ''.join(pairs_list)
+
+    return txt
+
+
 # Function for sending exchange rates every day with subscription
 async def daily_send(bot, db):
-    try:
-        chat_ids = db.get_subscription()
 
-        daily_rates = data["google"]
+    chat_ids = db.get_subscription()
+    text = daily_send_text()
 
-        for chat_id in chat_ids:
-            txt = ''
-            if chat_id[2]:
-                for key, value in daily_rates.items():
-                    txt += f"<b>{key.upper()}</b>: {value}\n"
-
-                await bot.send_message(chat_id[0],
-                                       text=f"🗓ЕЖЕДНЕВНАЯ РАССЫЛКА🗓\n\n"
-                                            f"{txt}",
-                                       parse_mode='html')
-    except Exception as ex:
-        print(ex)
+    for chat_id in chat_ids:
+        if chat_id[2]:
+            await bot.send_message(chat_id[0],
+                                   text=f"🗓ЕЖЕДНЕВНАЯ РАССЫЛКА🗓\n\n"
+                                        f"{text}",
+                                   parse_mode='html')
 
 
 def get_text_to_send(value: str):
