@@ -12,7 +12,7 @@ class QuotesData:
 
     google_data = rates.get_google_exchange('latest')
     mig_data = rates.get_mig_exchange()
-    response_time = datetime.now(pytz.timezone('Kazakhstan/Almaty')).strftime("%d:%m:%Y %H:%M")
+    response_time = datetime.now(pytz.timezone('Asia/Almaty')).strftime("%d:%m:%Y %H:%M")
     file = "core/services/quotes.json"
 
     def collect_data(self):
