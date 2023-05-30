@@ -1,5 +1,6 @@
 version: '2.15.1'
 services:
+
   redis-throttling:
     image: redis:alpine
     command:
@@ -7,8 +8,9 @@ services:
     env_file:
       - ./.env_docker
     ports:
-      - "6378:6378"
+      - "6380:6380"
     restart: on-failure
+
   redis-states:
     image: redis:alpine
     command:
@@ -18,6 +20,7 @@ services:
     ports:
       - "6379:6379"
     restart: on-failure
+
   db:
     image: postgres:15.2-alpine
     environment:
@@ -30,6 +33,7 @@ services:
     ports:
       - "5432:5432"
     restart: on-failure
+
   bot:
     build: .
     command: sh -c "python -m bot"
@@ -37,7 +41,8 @@ services:
       - ./.env_docker
     depends_on:
       - db
-      - redis
+      - redis-states
+      - redis-throttling
     restart: always
 
 volumes:

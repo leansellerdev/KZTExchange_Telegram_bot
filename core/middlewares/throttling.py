@@ -5,7 +5,7 @@ from aiogram.types import Message, TelegramObject
 from redis.asyncio.client import Redis
 from aiogram.fsm.storage.redis import RedisStorage
 
-redis: Redis = Redis(host='redis-throttling', port=6378)
+redis: Redis = Redis(host='redis-throttling', port=6380)
 storage_middleware: RedisStorage = RedisStorage(redis)
 
 
