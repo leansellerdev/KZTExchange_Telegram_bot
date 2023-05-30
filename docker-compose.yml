@@ -1,6 +1,15 @@
 version: '2.15.1'
 services:
-  redis:
+  redis-throttling:
+    image: redis:alpine
+    command:
+      - redis-server
+    env_file:
+      - ./.env_docker
+    ports:
+      - "6378:6378"
+    restart: on-failure
+  redis-states:
     image: redis:alpine
     command:
       - redis-server
