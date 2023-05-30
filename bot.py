@@ -10,6 +10,7 @@ from setup import *
 from core.services.quotes_data import data
 from core.services.services import daily_send
 from core.handlers import users_handlers, subscription_handlers, other_handlers, admin_handlers, currency_handlers
+from core.middlewares.throttling import ThrottlingMiddleware, storage_middleware
 
 
 # Инициализируем логгер
@@ -33,6 +34,7 @@ async def main():
     dp.include_router(subscription_handlers.router)
     dp.include_router(currency_handlers.router)
     dp.include_router(other_handlers.router)
+    dp.message.middleware(ThrottlingMiddleware(storage=storage_middleware))
 
     # Собираем информацию о курсах валют и сохраняем ее в файл
     data.save_data()
