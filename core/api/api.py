@@ -47,10 +47,15 @@ class Exchange:
         response = self.__get_mig_response()
 
         soup = BeautifulSoup(response, 'html.parser')
+
         block = soup.find('table')
         item = block.find_all('td')
 
+        gotten_time = soup.find('h4').text.split()
+        time = ' '.join(gotten_time[1:])
+
         exchanges = {
+            "time": time,
             "buy": {
                 "USD": item[0].text,
                 "EUR": item[3].text,
