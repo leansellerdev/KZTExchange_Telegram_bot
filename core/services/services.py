@@ -7,6 +7,7 @@ from core.api.api import rates
 from datetime import datetime
 from core.services.quotes_data import data
 
+data.save_data()
 data = data.get_data()
 mig_rates = data["mig"]
 
@@ -36,7 +37,7 @@ async def daily_send(bot, db):
 
 
 def get_text_to_send(value: str):
-    current_time = data["update_time"]
+    current_time = data["mig"]["time"]
     value = value[2:].upper().strip()
 
     txt = f"{current_time}\nПокупка <b>{value}/KZT</b>: {buy_rates[value]}\nПродажа <b>{value}/KZT</b>: {sell_rates[value]}"
