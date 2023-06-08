@@ -15,7 +15,7 @@ router: Router = Router()
 
 
 @router.message(Command(commands=['subscribe']))
-@router.message(Text(text=["📝Подписаться"]))
+@router.message(Text(text=["📝 Подписаться"]))
 async def subscribe(message: Message):
     if not db.subscriber_exists(message.from_user.id):
         db.add_subscriber(user_id=message.from_user.id,
