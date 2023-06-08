@@ -22,5 +22,7 @@ class FSMExchangeRates(StatesGroup):
     """
 
     choose_action = State()
+    choose_district = State()
+    getting_contacts = State()
     choose_currency = State()
     work_with_currency = State()
