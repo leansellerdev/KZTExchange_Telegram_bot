@@ -8,8 +8,9 @@ from aiogram.types import Message
 from aiogram.filters import Text, Command
 from aiogram.fsm.context import FSMContext
 from core.states.states import FSMExchangeRates
-from core.keyboards.action_buttons import start_kb_builder
+from core.keyboards.action_buttons import start_kb_builder, contact_kb_builder
 from core.bot_lexicon.lexicon_ru import info_text
+from core.services.addresses import get_address_info
 # from services.services import get_rates_to_date_text
 
 router: Router = Router()
@@ -48,6 +49,25 @@ async def get_back(message: Message, state: FSMContext):
                              resize_keyboard=True
                          ),
                          parse_mode='html')
+
+
+@router.message(Text(text=["☎️ Контакты"]))
+async def send_districts(message: Message, state: FSMContext):
+
+    await state.set_state(FSMExchangeRates.choose_district)
+    await message.answer(text="Выберите район:",
+                         reply_markup=contact_kb_builder.as_markup(
+                             resize_keyboard=True
+                         ),
+                         parse_mode='html')
+
+
+@router.message(Text(text=["Ауэзовский", "Бостандыкский", "Алмалинский", "Медеуский",
+                           "Жетысуский", "Турксибский", "Талгарский", "Алатауский"]))
+async def send_offices_contacts(message: Message, state: FSMContext):
+
+    await state.set_state(FSMExchangeRates.getting_contacts)
+    await message.answer(text=get_address_info(message.text))
 
 
 # Function for sending exchange rates to past days
