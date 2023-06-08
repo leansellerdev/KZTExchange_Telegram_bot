@@ -34,9 +34,6 @@ async def main():
     dp.include_router(currency_handlers.router)
     dp.include_router(other_handlers.router)
 
-    # Собираем информацию о курсах валют и сохраняем ее в файл
-    data.save_data()
-
     # Создаем таблицу в базе данных, если ее нет
     db.create_users_table()
 
