@@ -51,7 +51,8 @@ async def get_back(message: Message, state: FSMContext):
                          parse_mode='html')
 
 
-@router.message(Text(text=["☎️ Контакты"]))
+@router.message(Command(commands=["contacts"]), FSMExchangeRates.choose_district)
+@router.message(Text(text=["☎️ Контакты"]), FSMExchangeRates.choose_district)
 async def send_districts(message: Message, state: FSMContext):
 
     await state.set_state(FSMExchangeRates.choose_district)
@@ -67,7 +68,8 @@ async def send_districts(message: Message, state: FSMContext):
 async def send_offices_contacts(message: Message, state: FSMContext):
 
     await state.set_state(FSMExchangeRates.getting_contacts)
-    await message.answer(text=get_address_info(message.text))
+    await message.answer(text=await get_address_info(message.text),
+                         parse_mode='html')
 
 
 # Function for sending exchange rates to past days
