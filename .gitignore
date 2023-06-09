@@ -5,3 +5,4 @@ ExchangeBot/misc/testing.py
 .env_docker
 .idea
 .xml
+.json

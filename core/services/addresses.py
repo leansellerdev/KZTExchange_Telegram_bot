@@ -1,6 +1,6 @@
 import json
 
-json_file = "offices.json"
+json_file = "core/services/offices.json"
 
 
 def get_address_info(district: str):

@@ -38,7 +38,7 @@ async def process_unknown_action(message: Message):
 async def send_exchange_rates(message: Message, state: FSMContext):
     await state.update_data(id=message.from_user.id, rate=message.text[2:])
     await state.set_state(FSMExchangeRates.work_with_currency)
-    text = get_text_to_send(message.text)
+    text = await get_text_to_send(message.text)
 
     await message.answer(text=text, parse_mode="html")
     await message.answer("Введите сумму или выберите другую валюту:",

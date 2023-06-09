@@ -6,9 +6,11 @@ Main services
 from core.api.api import rates
 from datetime import datetime
 from core.services.quotes_data import data
+import asyncio
 
-data.save_data()
-data = data.get_data()
+asyncio.run(data.save_data())
+data = asyncio.run(data.get_data())
+
 mig_rates = data["mig"]
 
 sell_rates = mig_rates["sell"]
@@ -36,7 +38,8 @@ async def daily_send(bot, db):
         print(ex)
 
 
-def get_text_to_send(value: str):
+async def get_text_to_send(value: str):
+
     current_time = data["mig"]["time"]
     value = value[2:].upper().strip()
 
