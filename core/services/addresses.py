@@ -1,17 +1,20 @@
 import json
 
-json_file = "core/services/offices.json"
+offices_info = "core/services/offices.json"
 
 
-def get_address_info(district: str):
+async def get_address_info(district: str):
 
-    with open(json_file, encoding='utf8') as openfile:
+    with open(offices_info, encoding='utf8') as openfile:
         addresses: dict = json.load(openfile)
 
     text = []
 
     for keys, values in addresses[district].items():
-        text.append(f"Номер отделения: {keys}\nАдрес: {values['address']}\n"
-                    f"График работы: {values['shift']}\nКонтакты: {values['phones']}\n\nНа карте: {values['link']}\n\n")
+        text.append(f"<b>Номер отделения</b>: {keys}\n"
+                    f"<b>Адрес</b>: {values['address']}\n"
+                    f"<b>График работы</b>: {values['shift']}\n"
+                    f"<b>Тел.</b>: {values['phones'].replace('-', '')}\n"
+                    f"<b>На карте</b>: {values['link']}\n\n")
 
     return ''.join(text)
