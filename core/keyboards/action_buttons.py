@@ -17,9 +17,12 @@ change_currency_keyboard: list[KeyboardButton] = [KeyboardButton(text=value) for
 start_buttons_list = ["💲Работа с валютами", "📝 Подписаться", "☎️ Контакты"]
 start_buttons: list[KeyboardButton] = [KeyboardButton(text=value) for value in start_buttons_list]
 
-contact_buttons_list: list = ["Ауэзовский", "Бостандыкский", "🔙 Назад"]
+contact_buttons_list: list = ["Ауэзовский", "Бостандыкский", "Алмалинский",
+                              "Медеуский", "Жетысуский", "Турксибский",
+                              "Талгарский", "Алатауский", "🔙 Назад"]
+
 contact_buttons: list[KeyboardButton] = [KeyboardButton(text=value) for value in contact_buttons_list]
 
 start_kb_builder.row(*start_buttons, width=2)
 change_currency_builder.row(*change_currency_keyboard)
-contact_kb_builder.row(*contact_buttons)
+contact_kb_builder.row(*contact_buttons, width=3)
