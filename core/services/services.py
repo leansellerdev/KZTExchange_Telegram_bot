@@ -70,6 +70,7 @@ def get_rates_to_date_text(day: str):
 def get_currency_result_text(summa: float, rate: str):
     rate = rate.upper().strip()
 
+    summa = abs(summa)
     sell = float(sell_rates[rate])
     buy = float(buy_rates[rate])
 
