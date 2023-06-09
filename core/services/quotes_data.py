@@ -11,12 +11,12 @@ class QuotesData:
 
     google_data = rates.get_google_exchange('latest')
     mig_data = rates.get_mig_exchange()
-    response_time = datetime.now().strftime("%d:%m:%Y %H:%M")
-    file = "сquotes.json"
+    file = "core/services/quotes.json"
 
     async def collect_data(self):
+        response_time = datetime.now().strftime("%d:%m:%Y %H:%M")
 
-        json_file = {"update_time": self.response_time, "google": self.google_data, "mig": self.mig_data}
+        json_file = {"update_time": response_time, "google": self.google_data, "mig": self.mig_data}
         return json.dumps(json_file, indent=4)
 
     async def save_data(self):
