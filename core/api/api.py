@@ -23,12 +23,12 @@ class Exchange:
 
         self.__headers = {"User-Agent": self.ua}
 
-    def __get_mig_response(self):
+    async def __get_mig_response(self):
         response = requests.get(self.__mig_api, headers=self.__headers)
 
         return response.content
 
-    def get_google_exchange(self, date: str):
+    async def get_google_exchange(self, date: str):
         currency_dict = {"usd": '',
                          "eur": '',
                          "rub": '',
@@ -43,8 +43,8 @@ class Exchange:
 
         return currency_dict
 
-    def get_mig_exchange(self):
-        response = self.__get_mig_response()
+    async def get_mig_exchange(self):
+        response = await self.__get_mig_response()
 
         soup = BeautifulSoup(response, 'html.parser')
 

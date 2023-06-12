@@ -8,16 +8,23 @@ async def admin_message_notification(func):
                            parse_mode='html')
 
 
-def get_users():
-    data = db.get_users()
+async def get_users_list():
+
+    users = db.get_users()
+    text = "Пользователи: \n\n"
 
     user_counter = 0
     subed_user_counter = 0
 
-    for user in data:
+    for user in users:
+
+        text += f"ID: {user[0]}\nИмя: {user[1]}\nСтатус: {'Подписан' if user[2] is True else 'Не подписан'}\n\n"
+
         user_counter += 1
 
         if user[2]:
             subed_user_counter += 1
 
-    return f"Общее количество пользователей: {user_counter}\nКоличество подписанных пользователей: {subed_user_counter}"
+    text += f"Общее количество пользователей: {user_counter}\nКоличество подписанных пользователей: {subed_user_counter}"
+
+    return text

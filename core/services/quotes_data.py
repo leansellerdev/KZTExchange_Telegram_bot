@@ -9,14 +9,16 @@ class QuotesData:
     This class is using for work with quotes and write/read it to json file
     """
 
-    google_data = rates.get_google_exchange('latest')
-    mig_data = rates.get_mig_exchange()
     file = "core/services/quotes.json"
 
-    async def collect_data(self):
+    @staticmethod
+    async def collect_data():
+        google_data = await rates.get_google_exchange('latest')
+        mig_data = await rates.get_mig_exchange()
+
         response_time = datetime.now().strftime("%d:%m:%Y %H:%M")
 
-        json_file = {"update_time": response_time, "google": self.google_data, "mig": self.mig_data}
+        json_file = {"update_time": response_time, "google": google_data, "mig": mig_data}
         return json.dumps(json_file, indent=4)
 
     async def save_data(self):
