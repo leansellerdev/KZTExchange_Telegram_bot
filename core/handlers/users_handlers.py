@@ -51,8 +51,8 @@ async def get_back(message: Message, state: FSMContext):
                          parse_mode='html')
 
 
-@router.message(Command(commands=["contacts"]), FSMExchangeRates.choose_district)
-@router.message(Text(text=["☎️ Контакты"]), FSMExchangeRates.choose_district)
+@router.message(Command(commands=["contacts"]), FSMExchangeRates.choose_action)
+@router.message(Text(text=["☎️ Контакты"]), FSMExchangeRates.choose_action)
 async def send_districts(message: Message, state: FSMContext):
 
     await state.set_state(FSMExchangeRates.choose_district)
@@ -64,7 +64,8 @@ async def send_districts(message: Message, state: FSMContext):
 
 
 @router.message(Text(text=["Ауэзовский", "Бостандыкский", "Алмалинский", "Медеуский",
-                           "Жетысуский", "Турксибский", "Талгарский", "Алатауский"]))
+                           "Жетысуский", "Турксибский", "Талгарский", "Алатауский"]),
+                FSMExchangeRates.choose_district)
 async def send_offices_contacts(message: Message, state: FSMContext):
 
     await state.set_state(FSMExchangeRates.getting_contacts)
